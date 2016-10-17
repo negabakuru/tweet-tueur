@@ -12,15 +12,23 @@
 <body>
     <script>
         var socket = io();
-        var renderer = PIXI.autoDetectRenderer(800, 800);
+        var renderer = PIXI.autoDetectRenderer(document.body.clientWidth - 10, window.innerHeight - 20);
+        var tweetMaxWidth = 200;
+        
         renderer.backgroundColor = 0xe0ffff;
         document.body.appendChild(renderer.view);
         var stage = new PIXI.Container();
 
+        function CreateTweetBox(tweet)
+        {
+            var tweetText = new PIXI.Text(tweet.text, { fontSize: "12px", fontFamily: "sans-serif", fill: "black", wordWrap: true, wordWrapWidth: tweetMaxWidth });
+            tweetText.position.set(Math.random() * (renderer.width - tweetMaxWidth - 1), Math.random() * (renderer.width - tweetText.height - 1));
+            stage.addChild(tweetText);
+            renderer.render(stage);
+        }
 
-        socket.on('newTweet', function (data) {
-            console.log('Received a new tweet:' + data.text);
-        });
+
+        socket.on('newTweet', CreateTweetBox);
 
         renderer.render(stage);
 
