@@ -7,12 +7,23 @@
 </head>
 
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.0/pixi.min.js"></script>
+
 <body>
     <script>
         var socket = io();
+        var renderer = PIXI.autoDetectRenderer(800, 800);
+        renderer.backgroundColor = 0xe0ffff;
+        document.body.appendChild(renderer.view);
+        var stage = new PIXI.Container();
+
+
         socket.on('newTweet', function (data) {
             console.log('Received a new tweet:' + data.text);
         });
+
+        renderer.render(stage);
+
     </script>
 
 </body>
