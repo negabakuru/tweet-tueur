@@ -1,7 +1,5 @@
 var http = require('http');
 var fs = require('fs');
-var twitter = require('twitter');
-
 
 function handleRequest(request, response) {
     console.log("Server received a request.");
@@ -20,6 +18,13 @@ server.listen(port, function () {
 });
 
 
+var io = require('socket.io')(server);
+var twitter = require('twitter');
+
+io.on('connection', function (socket) {
+    console.log('Received a connection on socket.io .');
+});
+
 var twitterInfos;
 var twitterClient;
 fs.readFile('twitter_infos.json', 'utf8', function (error, data) {
@@ -35,6 +40,6 @@ fs.readFile('twitter_infos.json', 'utf8', function (error, data) {
 function SetStream() {
     var stream = twitterClient.stream('statuses/filter', { track: twitterInfos.hashtag });
     stream.on('data', function (tweet) {
-        console.log('New tweet: ' + tweet.text);
+        io.emit('newTweet', { 'text': tweet.text });
     });
 }

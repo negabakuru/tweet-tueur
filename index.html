@@ -5,7 +5,15 @@
     <meta charset="utf-8" />
     <title>tweet-tueur</title>
 </head>
+
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 <body>
+    <script>
+        var socket = io();
+        socket.on('newTweet', function (data) {
+            console.log('Received a new tweet:' + data.text);
+        });
+    </script>
 
 </body>
 </html>
