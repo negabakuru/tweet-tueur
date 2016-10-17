@@ -15,6 +15,7 @@
         var renderer = PIXI.autoDetectRenderer(document.body.clientWidth - 10, window.innerHeight - 20);
         var tweetMaxWidth = 200;
         var tweetSpeed = 5;
+        var score = 0;
         
         renderer.backgroundColor = 0xe0ffff;
         document.body.appendChild(renderer.view);
@@ -31,7 +32,7 @@
             tweetBackground.y = -tweetText.height - 6;
 
             tweetBackground.interactive = true;
-            tweetBackground.on('mousedown', function () { stage.removeChild(tweetBackground); });
+            tweetBackground.on('mousedown', function () { stage.removeChild(tweetBackground); score += 1; });
 
             tweetBackground.addChild(tweetText);
             tweetText.position.set(5, 3);
@@ -54,7 +55,11 @@
                     stage.removeChildAt(i);
             }
 
-            renderer.render(stage);
+            var scoreText = new PIXI.Text('Score: ' + score.toString(), { fontFamily: 'Arial', fontSize: 18, fill: 0xff1010 });
+            scoreText.x = 5; scoreText.y = 5;
+
+            renderer.render(scoreText);
+            renderer.render(stage, null, false);
         }
 
     </script>
