@@ -23,8 +23,19 @@
         function CreateTweetBox(tweet)
         {
             var tweetText = new PIXI.Text(tweet.text, { fontSize: "12px", fontFamily: "sans-serif", fill: "black", wordWrap: true, wordWrapWidth: tweetMaxWidth });
-            tweetText.position.set(Math.random() * (renderer.width - tweetMaxWidth - 1), -tweetText.height);
-            stage.addChild(tweetText);
+            var tweetBackground = new PIXI.Graphics();
+            tweetBackground.beginFill(0xFFFFFF);
+            tweetBackground.drawRoundedRect(0, 0, tweetMaxWidth + 10, tweetText.height + 6);
+            tweetBackground.endFill();
+            tweetBackground.x = Math.random() * (renderer.width - tweetMaxWidth - 1 - 10);
+            tweetBackground.y = -tweetText.height - 6;
+
+            tweetBackground.interactive = true;
+            tweetBackground.on('mousedown', function () { stage.removeChild(tweetBackground); });
+
+            tweetBackground.addChild(tweetText);
+            tweetText.position.set(5, 3);
+            stage.addChild(tweetBackground);
             renderer.render(stage);
         }
 
