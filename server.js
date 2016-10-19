@@ -38,8 +38,9 @@ fs.readFile('twitter_infos.json', 'utf8', function (error, data) {
 });
 
 function SetStream() {
-    var stream = twitterClient.stream('statuses/filter', { track: twitterInfos.hashtag });
+    var stream = twitterClient.stream('statuses/filter', { track: '#' + twitterInfos.hashtag });
     stream.on('data', function (tweet) {
         io.emit('newTweet', { 'text': tweet.text });
     });
+    console.log("Tracking #" + twitterInfos.hashtag);
 }
